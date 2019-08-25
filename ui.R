@@ -11,7 +11,9 @@ shinyUI(fluidPage(
         sidebarPanel(
             textInput("library_name", label = "Package name", value = "DrWhy.AI", width = "200px"),
             selectInput("hex_background", "Version", c("website", "hex"), "hex", width = "200px"),
-            selectInput("hex_type", "Package type", c("general", "explanations", "automation"), "general", width = "200px"),
+            selectInput("hex_type", "Package type", c("original colors" = "original", "adapters (DALEX, DALEXtra)" = "adapters",
+                                                      "explanations (ingredients, auditor, ...)" = "explanations", "automation (dime, modelDown, ...)" = "automation"),
+                        "original", width = "200px"),
             textAreaInput("bit_hex", "Here put the binary pattern.\n Keep same number of digits.", "0 0 0 0 0 0 0 0 1
 1 1 0 0 1 1 1 1 1
 0 0 0 0 0 0 0 0 1

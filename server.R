@@ -80,12 +80,14 @@ shinyServer(function(input, output) {
         df_blue <- df[df$id %in% which(ind == "0"),]
 
         main_color <- switch (input$hex_type,
-                              general = "#8bdcbe",
+                              original = "#8bdcbe",
+                              adapters = "#8bdcbe",
                               explanations = "#ffa58c",
                               automation = "#46bac2"
         )
         secondary_color <- switch (input$hex_type,
-                                   general = "#4378bf",
+                                   original = "#371ea3",
+                                   adapters = "#4378bf",
                                    explanations = "#ae2c87",
                                    automation = "#371ea3"
         )
