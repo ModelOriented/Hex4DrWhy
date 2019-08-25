@@ -72,23 +72,36 @@ df_fiolet <- rbind(get_triangle_coords(-2, -3, id = -1)[3,],
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
 
-    output$distPlot <- renderPlot({
+    get_plot <- reactive({
         pname <- input$library_name
         ind <- strsplit(input$bit_hex, split = "[^01]")[[1]]
 
         df_red <- df[df$id %in% which(ind == "1"),]
         df_blue <- df[df$id %in% which(ind == "0"),]
 
-        if (input$background) {
-            b_color = "#8bdcbe"
-            s_color = "#371ea3"
-            p_color = "white"
-            o_color = "white"
-        } else {
+        main_color <- switch (input$hex_type,
+                              general = "#8bdcbe",
+                              explanations = "#ffa58c",
+                              automation = "#46bac2"
+        )
+        secondary_color <- switch (input$hex_type,
+                                   general = "#4378bf",
+                                   explanations = "#ae2c87",
+                                   automation = "#371ea3"
+        )
+
+        if (input$hex_background == "website") {
+            # website, white background
             b_color = "white"
-            s_color = "#371ea3"
-            p_color = "#8bdcbe"
-            o_color = "#371ea3"
+            s_color = secondary_color
+            p_color = main_color
+            o_color = main_color
+        } else {
+            # hex, with background
+            b_color = main_color
+            s_color = secondary_color
+            p_color = "white"
+            o_color = main_color
         }
 
         ggplot(df) +
@@ -97,7 +110,34 @@ shinyServer(function(input, output) {
             geom_polygon(data=df_blue, aes(x = x, y = y, group = id), fill = p_color) +
             geom_text(x=5, y=-1, label = pname, angle = 30, size=11, color=s_color, family = "sans")+
             coord_fixed() + theme_void() + theme(legend.position = "none")
-
     })
+
+    output$distPlot <- renderPlot({
+        get_plot()
+    })
+
+    output$download_png <- downloadHandler(
+        filename = function() {
+            paste('drwhy_', input$library_name, '_',input$hex_background,'.png', sep='')
+        },
+        content = function(con) {
+            plt <- get_plot()
+            png(con, width = 360, height = 360)
+            print(plt)
+            dev.off()
+        }
+    )
+
+    output$download_pdf <- downloadHandler(
+        filename = function() {
+            paste('drwhy_', input$library_name, '_',input$hex_background,'.pdf', sep='')
+        },
+        content = function(con) {
+            plt <- get_plot()
+            pdf(con, width = 5, height = 5)
+            print(plt)
+            dev.off()
+        }
+    )
 
 })

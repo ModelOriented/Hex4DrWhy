@@ -10,7 +10,8 @@ shinyUI(fluidPage(
     sidebarLayout(
         sidebarPanel(
             textInput("library_name", label = "Package name", value = "DrWhy.AI", width = "200px"),
-            checkboxInput("background", "Add background", value = TRUE),
+            selectInput("hex_background", "Version", c("website", "hex"), "hex", width = "200px"),
+            selectInput("hex_type", "Package type", c("general", "explanations", "automation"), "general", width = "200px"),
             textAreaInput("bit_hex", "Here put the binary pattern.\n Keep same number of digits.", "0 0 0 0 0 0 0 0 1
 1 1 0 0 1 1 1 1 1
 0 0 0 0 0 0 0 0 1
@@ -20,7 +21,9 @@ shinyUI(fluidPage(
 
         # Show a plot of the generated distribution
         mainPanel(
-            plotOutput("distPlot")
+            downloadLink("download_pdf", "[Download pdf]"),
+            downloadLink("download_png", "[Download png]"),
+            plotOutput("distPlot", width = "400px", height = "400px")
         )
     )
 ))
