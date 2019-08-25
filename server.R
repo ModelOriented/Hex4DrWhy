@@ -92,18 +92,17 @@ shinyServer(function(input, output) {
                                    automation = "#371ea3"
         )
 
+        s_color = secondary_color
         if (input$hex_background == "website") {
             # website, white background
             b_color = "white"
-            s_color = secondary_color
             p_color = main_color
-            o_color = main_color
+            o_color = secondary_color
         } else {
             # hex, with background
             b_color = main_color
-            s_color = secondary_color
             p_color = "white"
-            o_color = main_color
+            o_color = "white"
         }
 
         ggplot(df) +
