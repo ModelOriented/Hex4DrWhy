@@ -68,6 +68,15 @@ df_fiolet <- rbind(get_triangle_coords(-2, -3, id = -1)[3,],
                    get_triangle_coords(9, -3, id = -1)[3,],
                    get_triangle_coords(3, -7, id = -1)[1,])
 
+# shift to the middle
+df$x <- df$x - 3
+df$y <- df$y - 2
+# rotate -30 deg
+df$nx <- cos(-3.1415/6)*df$x + sin(-3.1415/6)*df$y
+df$ny <- cos(-3.1415/6)*df$y - sin(-3.1415/6)*df$x
+df$x <- df$nx + 3.1
+df$y <- df$ny + 2.5
+
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
@@ -80,13 +89,13 @@ shinyServer(function(input, output) {
         df_blue <- df[df$id %in% which(ind == "0"),]
 
         main_color <- switch (input$hex_type,
-                              original = "#8bdcbe",
+                              original = "#92CCB5",
                               adapters = "#8bdcbe",
                               explanations = "#ffa58c",
                               automation = "#46bac2"
         )
         secondary_color <- switch (input$hex_type,
-                                   original = "#371ea3",
+                                   original = "#373589",
                                    adapters = "#4378bf",
                                    explanations = "#ae2c87",
                                    automation = "#371ea3"
@@ -109,7 +118,7 @@ shinyServer(function(input, output) {
             geom_polygon(data=df_fiolet, aes(x = x-h/2, y = y, group = id), fill = b_color, color = o_color, size=3.5) +
             geom_polygon(data=df_red, aes(x = x, y = y, group = id), fill = s_color) +
             geom_polygon(data=df_blue, aes(x = x, y = y, group = id), fill = p_color) +
-            geom_text(x=5, y=-1, label = pname, angle = 30, size=11, color=s_color, family = "sans")+
+            geom_text(x=3, y=-0.7, label = pname, size=13, color=s_color, family = "sans")+
             coord_fixed() + theme_void() + theme(legend.position = "none")
     })
 

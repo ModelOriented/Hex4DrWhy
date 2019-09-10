@@ -10,7 +10,7 @@ shinyUI(fluidPage(
     sidebarLayout(
         sidebarPanel(
             textInput("library_name", label = "Package name", value = "DrWhy.AI", width = "200px"),
-            selectInput("hex_background", "Version", c("website", "hex"), "hex", width = "200px"),
+            selectInput("hex_background", "Version", c("website", "hex"), "website", width = "200px"),
             selectInput("hex_type", "Package type", c("original colors" = "original", "adapters (DALEX, DALEXtra)" = "adapters",
                                                       "explanations (ingredients, auditor, ...)" = "explanations", "automation (dime, modelDown, ...)" = "automation"),
                         "original", width = "200px"),
