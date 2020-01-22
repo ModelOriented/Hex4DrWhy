@@ -17,6 +17,8 @@ get_triangle_coords <- function(row = 1, col = 1, id = 1) {
     }
     x <- h*x + h*row
     data.frame(x, y, id = id)
+    # # shift to the 0
+    #data.frame(x = x - 0.8660254, y = y + 0.5, id = id)
 }
 
 # get coords
@@ -52,6 +54,7 @@ df6 <- do.call(rbind, tmp6)
 
 df <- rbind(df1, df2, df3, df4, df5, df6)
 
+
 ind <- c(0,0,0,0,0,0,0,0,1,
          1,1,0,0,1,1,1,1,1,
          0,0,0,0,0,0,0,0,1,
@@ -68,14 +71,15 @@ df_fiolet <- rbind(get_triangle_coords(-2, -3, id = -1)[3,],
                    get_triangle_coords(9, -3, id = -1)[3,],
                    get_triangle_coords(3, -7, id = -1)[1,])
 
-# shift to the middle
-df$x <- df$x - 3
-df$y <- df$y - 2
-# rotate -30 deg
-df$nx <- cos(-3.1415/6)*df$x + sin(-3.1415/6)*df$y
-df$ny <- cos(-3.1415/6)*df$y - sin(-3.1415/6)*df$x
-df$x <- df$nx + 3.1
-df$y <- df$ny + 2.5
+
+# # shift to the middle
+# df$x <- df$x - 3
+# df$y <- df$y - 2
+# # rotate -30 deg
+# df$nx <- cos(-3.1415/6)*df$x + sin(-3.1415/6)*df$y
+# df$ny <- cos(-3.1415/6)*df$y - sin(-3.1415/6)*df$x
+# df$x <- df$nx + 3.1
+# df$y <- df$ny + 2.5
 
 
 # Define server logic required to draw a histogram
@@ -119,7 +123,7 @@ shinyServer(function(input, output) {
             geom_polygon(data=df_red, aes(x = x, y = y, group = id), fill = s_color) +
             geom_polygon(data=df_blue, aes(x = x, y = y, group = id), fill = p_color) +
             geom_text(x=3, y=-0.7, label = pname, size=13, color=s_color, family = "sans")+
-            coord_fixed() + theme_void() + theme(legend.position = "none")
+            coord_fixed() + theme(legend.position = "none") #+ theme_void()
     })
 
     output$distPlot <- renderPlot({
